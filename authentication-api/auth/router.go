@@ -1,4 +1,4 @@
-package store
+package auth
 
 import (
 	"fmt"
@@ -16,27 +16,9 @@ type Route struct {
 
 type Routes []Route
 
-const pathPrefix = "/product"
-
 var routes = Routes{
-	Route{
-		"IndexProduct",
-		"GET",
-		"/",
-		controller.ProductsHandler,
-	},
-	Route{
-		"AddProduct",
-		"POST",
-		"/add",
-		controller.AddProduct,
-	},
-	Route{
-		"SearchProduct",
-		"GET",
-		"/search",
-		controller.ProductsHandler,
-	},
+	//Authentication
+	Route{"Authenticate", "POST", "/auth", Handler.Authenticate},
 }
 
 //NewRouter will init router for store package
@@ -45,7 +27,6 @@ func NewRouter() *mux.Router {
 	for _, r := range routes {
 		router.Methods(r.Method).
 			Name(r.Name).
-			PathPrefix(pathPrefix).
 			Path(r.Pattern).
 			Handler(r.HandlerFunc)
 		fmt.Println(r)

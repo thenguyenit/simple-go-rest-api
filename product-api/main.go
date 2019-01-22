@@ -5,9 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/thenguyenit/simple-go-rest-api/store"
-
 	"github.com/joho/godotenv"
+	"github.com/thenguyenit/simple-go-rest-api/product-api/product"
 )
 
 func main() {
@@ -24,7 +23,7 @@ func main() {
 	if port == "" {
 		log.Fatal("$PORT must be set")
 	}
-	router := store.NewRouter()
+	router := product.NewRouter()
 	http.Handle("/", router)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }

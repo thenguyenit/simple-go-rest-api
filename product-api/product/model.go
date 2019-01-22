@@ -1,4 +1,4 @@
-package store
+package product
 
 type Product struct {
 	ID     int     `bson:"_id"`
