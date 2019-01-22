@@ -27,7 +27,8 @@ go get github.com/dgrijalva/jwt-go
 ```
 
 ### JSON Web Tokens
-Mục đích của Token là để kiểm tra xem một request từ Client tới Application Server đã được xác thực hay chưa (hay đã đăng nhập với username/password). 
+
+Mục đích của Token là để kiểm tra xem một request từ Client tới Application Server đã được xác thực hay chưa (hay đã đăng nhập với username/password). 
 Client sẽ xác thực với Authorization Server, sau đó Authorization Server sẽ gửi cho Client một Token, kể từ đó việc giao tiếp của Client đến những Application Server sẽ gửi kèm theo Token này nhằm để Application Server xác thực.
 
 Cấu trúc của một JSON Web Token sẽ bao gồm 3 thứ header, payload và signature
@@ -42,7 +43,7 @@ Giá trị của Header JSON bao gồm `typ` dùng để xác định loại tok
 
 Có hai thuật toán hash hay sử dụng mà JWT có support là HS256 và RS256
 
-**HS256** thuộc loại thuật toán đối xứng (symmetric algorithm), có nghĩa là ở đây chỉ có một secret key được dùng cho cả bước tạo signature và validate
+**HS256** thuộc loại thuật toán đối xứng (symmetric algorithm), có nghĩa là ở đây chỉ có một secret key được dùng cho cả bước tạo signature và validate
 HS256 là mặc định của JWT và cũng được recommended vì nó khá nhỏ và việc tính toán trên thuật toán này nhanh hơn.
 ```
 HMACSHA256(
@@ -52,7 +53,7 @@ HMACSHA256(
 )
 ```
 
-Ngược lại, **RS256** thuộc loại thuật toán bất đối xứng (asymmatric algorithm), có nghĩa là nếu bạn cần tạo ra một signature thì phải cần một cặp public/private key.
+Ngược lại, **RS256** thuộc loại thuật toán bất đối xứng (asymmatric algorithm), có nghĩa là nếu bạn cần tạo ra một signature thì phải cần một cặp public/private key.
 ```
 RSASHA256(
   base64UrlEncode(header) + "." +
@@ -78,27 +79,28 @@ MIICWwIBAAKBgQDdlatRjRjogo3WojgGHFHYLugdUWAY9iR3fy4arWNA1KoS8kVw33cJibXr8bvwUAUp
     "role": "admin"
 }
 ```
-Payload là dữ liệu tự định nghĩa được bao gồm trong một token, nó còn hay được gọi là `claims` trong JWT
+Payload là dữ liệu tự định nghĩa được bao gồm trong một token, nó còn hay được gọi là `claims` trong JWT
 
 **Signature**
 Signature là một chữ ký số dùng để xác thực và tin tưởng.
 
-Công thức để tạo ra một signature với thuật toán HMAC và một secret key
+Công thức để tạo ra một signature với thuật toán HMAC và một secret key
 ```
 // signature algorithm
 data = base64urlEncode( header ) + “.” + base64urlEncode( payload )
 hashedData = hash( data, secret )
 signature = base64urlEncode( hashedData )
-```
-Chúng ta cũng có thể tạo ra một signature dùng public key/private key với thuật toán RSA như ở trên.
+```
 
-**JSON Web Token sẽ nối chúng lại với nhau**
+Chúng ta cũng có thể tạo ra một signature dùng public key/private key với thuật toán RSA như ở trên.
+
+**JSON Web Token sẽ nối chúng lại với nhau**
 Và cuối cùng một token sẽ là một chuỗi nối giữa header, payload và signature
 ```
 token = base64urlEncode( header ) + “.” + base64urlEncode( payload ) + “.” + signature
 ```
 
-Chú ý: như đã thấy ở trên header và payload chỉ sử dụng `base64urlEncode` chứ không được mã hoá nhé.
+Chú ý: như đã thấy ở trên header và payload chỉ sử dụng `base64urlEncode` chứ không được mã hoá nhé.
 
 ## Product Application Server
 Product Application Server chứa các endpoint:
@@ -118,15 +120,3 @@ $ go get "github.com/gorilla/mux"
 ```
 go get "gopkg.in/mgo.v2"
 ```
-
-#### SSL handshake steps
-
-Symmetric Algorithm (hay được gọi là secret key algorithm) là một thuật toán mã hoá mà nó dùng chung 1 key cho việc mã hoá và giải mã dữ liệu
-SH256
-
-*References:*
-
-* [http://www.golangbootcamp.com/book/](http://www.golangbootcamp.com/book/)
-* [Goroutine under the hood](https://devblog.dwarvesf.com/post/go-routine-under-the-hood/)
-* [Concurrency vs. Parallelism](https://howtodoinjava.com/java/multi-threading/concurrency-vs-parallelism/)
-* [How goroutines work](https://blog.nindalf.com/posts/how-goroutines-work/)
